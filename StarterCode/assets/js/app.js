@@ -1,28 +1,28 @@
 //Create window parameters
 
-var Width = parseInt(d3.select("#scatter").style("Width"));
-var Height = Width - Width / 3.9;
+var width = parseInt(d3.select("#scatter").style("width"));
+var height = width - width / 3.9;
 
 // Margin
-var margin = 25;
+var margin = 20;
 var labels = 110;
 
 // padding for the text at the bottom and left axes
-var bottompad = 30;
-var leftpad = 30;
+var bottompad = 40;
+var leftpad = 40;
 
 // Create the actual canvas for the graph
 var svg = d3
   .select("#scatter")
   .append("svg")
-  .attr("Width", Width)
-  .attr("Height", Height)
+  .attr("width", width)
+  .attr("height", height)
   .attr("class", "chart");
 
 //Radius for all dots.
 var circRadius;
 function crGet() {
-  if (Width <= 530) {
+  if (width <= 530) {
     circRadius = 5;
   }
   else {
@@ -39,9 +39,9 @@ function newXtext() {
   xLabel.attr(
     "transform",
     "translate(" +
-      ((Width - labels) / 2 + labels) +
+      ((width - labels) / 2 + labels) +
       ", " +
-      (Height - margin - bottompad) +
+      (height - margin - bottompad) +
       ")"
   );
 }
@@ -72,7 +72,7 @@ xLabel
   .attr("class", "aText inactive x")
   .text("Household Income (Median)");
 
-var leftY = (Height + labels) / 2 - labels;
+var leftY = (height + labels) / 2 - labels;
 var leftX = margin + leftpad;
 //Working on the Y labels
 svg.append("g").attr("class", "yLabel");
@@ -181,17 +181,17 @@ function visualize(theData) {
   var xaxis_scalelinear = d3
     .scaleLinear()
     .domain([x_min, x_max])
-    .range([margin + labels, Width - margin]);
+    .range([margin + labels, width - margin]);
   var yaxis_scalelinear = d3
     .scaleLinear()
     .domain([y_min, y_max])
-    .range([Height - margin - labels, margin]);
+    .range([height - margin - labels, margin]);
   var xAxis = d3.axisBottom(xaxis_scalelinear);
   var yAxis = d3.axisLeft(yaxis_scalelinear);
 
   //make markers
   function markers() {
-    if (Width <= 500) {
+    if (width <= 500) {
       xAxis.ticks(5);
       yAxis.ticks(5);
     }
@@ -207,7 +207,7 @@ function visualize(theData) {
     .append("g")
     .call(xAxis)
     .attr("class", "xAxis")
-    .attr("transform", "translate(0," + (Height - margin - labels) + ")");
+    .attr("transform", "translate(0," + (height - margin - labels) + ")");
   svg
     .append("g")
     .call(yAxis)
@@ -344,23 +344,23 @@ function visualize(theData) {
 
   // One caveat: we need to specify what specific parts of the chart need size and position changes.
   function resize() {
-    // Redefine the Width, Height and leftY (the three variables dependent on the Width of the window).
-    Width = parseInt(d3.select("#scatter").style("Width"));
-    Height = Width - Width / 3.9;
-    leftY = (Height + labels) / 2 - labels;
+    // Redefine the width, height and leftY (the three variables dependent on the width of the window).
+    width = parseInt(d3.select("#scatter").style("width"));
+    height = width - width / 3.9;
+    leftY = (height + labels) / 2 - labels;
 
-    // Apply the Width and Height to the svg canvas.
-    svg.attr("Width", Width).attr("Height", Height);
+    // Apply the width and height to the svg canvas.
+    svg.attr("width", width).attr("height", height);
 
     // Change the xaxis_scalelinear and yaxis_scalelinear ranges
-    xaxis_scalelinear.range([margin + labels, Width - margin]);
-    yaxis_scalelinear.range([Height - margin - labels, margin]);
+    xaxis_scalelinear.range([margin + labels, width - margin]);
+    yaxis_scalelinear.range([height - margin - labels, margin]);
 
-    // With the scales changes, update the axes (and the Height of the x-axis)
+    // With the scales changes, update the axes (and the height of the x-axis)
     svg
       .select(".xAxis")
       .call(xAxis)
-      .attr("transform", "translate(0," + (Height - margin - labels) + ")");
+      .attr("transform", "translate(0," + (height - margin - labels) + ")");
 
     svg.select(".yAxis").call(yAxis);
 
