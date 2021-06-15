@@ -46,8 +46,8 @@ function newXtext() {
   );
 }
 newXtext();
-//Pick 2 labels
-//poverty
+//Pick 3 labels
+//Poverty
 xLabel
   .append("text")
   .attr("y", -26)
@@ -63,6 +63,14 @@ xLabel
   .attr("data-axis", "x")
   .attr("class", "aText inactive x")
   .text("Age (Median)");
+//Income
+xLabel
+  .append("text")
+  .attr("y", 26)
+  .attr("data-name", "income")
+  .attr("data-axis", "x")
+  .attr("class", "aText inactive x")
+  .text("Household Income (Median)");
 
 var leftY = (Height + labels) / 2 - labels;
 var leftX = margin + leftpad;
@@ -96,6 +104,15 @@ yLabel
   .attr("data-axis", "y")
   .attr("class", "aText inactive y")
   .text("Smokes (%)");
+
+//Lacks Healthcare
+yLabel
+  .append("text")
+  .attr("y", 26)
+  .attr("data-name", "healthcare")
+  .attr("data-axis", "y")
+  .attr("class", "aText inactive y")
+  .text("Lacks Healthcare (%)");
 
 //Import csv file
 d3.csv("assets/data/data.csv").then(function(data) {
@@ -251,7 +268,7 @@ function visualize(theData) {
   //User interaction to allow for changes on clicks
   d3.selectAll(".aText").on("click", function() {
     var self = d3.select(this);
-    //selecting only the ones that are not being used
+   //selecting only the ones that are not being used
     if (self.classed("inactive")) {
       var axis = self.attr("data-axis");
       var name = self.attr("data-name");
@@ -323,4 +340,5 @@ function visualize(theData) {
     }
   });
 
-};
+}
+  
