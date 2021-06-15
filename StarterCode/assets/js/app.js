@@ -340,5 +340,62 @@ function visualize(theData) {
     }
   });
 
+  d3.select(window).on("resize", resize);
+
+  // One caveat: we need to specify what specific parts of the chart need size and position changes.
+  function resize() {
+    // Redefine the Width, Height and leftY (the three variables dependent on the Width of the window).
+    Width = parseInt(d3.select("#scatter").style("Width"));
+    Height = Width - Width / 3.9;
+    leftY = (Height + labels) / 2 - labels;
+
+    // Apply the Width and Height to the svg canvas.
+    svg.attr("Width", Width).attr("Height", Height);
+
+    // Change the xaxis_scalelinear and yaxis_scalelinear ranges
+    xaxis_scalelinear.range([margin + labels, Width - margin]);
+    yaxis_scalelinear.range([Height - margin - labels, margin]);
+
+    // With the scales changes, update the axes (and the Height of the x-axis)
+    svg
+      .select(".xAxis")
+      .call(xAxis)
+      .attr("transform", "translate(0," + (Height - margin - labels) + ")");
+
+    svg.select(".yAxis").call(yAxis);
+
+    // Update the ticks on each axis.
+    markers();
+
+    // Update the labels.
+    newXtext();
+    yTextRefresh();
+
+    // Update the radius of each dot.
+    crGet();
+
+    // With the axis changed, let's update the location and radius of the state circles.
+    d3
+      .selectAll("circle")
+      .attr("cy", function(d) {
+        return yaxis_scalelinear(d[firsty]);
+      })
+      .attr("cx", function(d) {
+        return xaxis_scalelinear(d[firstx]);
+      })
+      .attr("r", function() {
+        return circRadius;
+      });
+
+    // We need change the location and size of the state texts, too.
+    d3
+      .selectAll(".stateText")
+      .attr("dy", function(d) {
+        return yaxis_scalelinear(d[firsty]) + circRadius / 3;
+      })
+      .attr("dx", function(d) {
+        return xaxis_scalelinear(d[firstx]);
+      })
+      .attr("r", circRadius / 3);
+  }
 }
-  
